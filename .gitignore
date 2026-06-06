@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Docker volumes
+postgres_data/
+
+# Local uploads (future)
+uploads/
+
+# Build artifacts
+dist/
+target/
+
+# Node
+node_modules/

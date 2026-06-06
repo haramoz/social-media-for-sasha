@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: stecken_rein_postgres
+    environment:
+      POSTGRES_DB: stecken_rein
+      POSTGRES_USER: stecken_user
+      POSTGRES_PASSWORD: stecken_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - stecken_rein_pgdata:/var/lib/postgresql/data
+
+volumes:
+  stecken_rein_pgdata:
