@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import api from '../services/api'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
@@ -8,15 +12,9 @@ const message = ref('')
 
 const login = async () => {
   try {
-    const response = await api.post('/auth/login', {
-      email: email.value,
-      password: password.value,
-    })
-
-    localStorage.setItem('currentUser', JSON.stringify(response.data))
-
-    message.value = `Welcome, ${response.data.firstName}!`
-  } catch (error) {
+    await authStore.login(email.value, password.value)
+    await router.push('/feed')
+  } catch {
     message.value = 'Login failed or account not approved yet.'
   }
 }
