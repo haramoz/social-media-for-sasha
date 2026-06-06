@@ -1,0 +1,19 @@
+target/
+
+.mvn/wrapper/maven-wrapper.jar
+
+*.log
+
+.idea/
+.vscode/
+
+.DS_Store
+
+.env
+.env.*
+
+# Spring Boot
+application-local.yml
+
+# Future uploads
+uploads/
