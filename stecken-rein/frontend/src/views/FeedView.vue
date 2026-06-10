@@ -29,8 +29,7 @@ const createPost = async () => {
   }
 
   await api.post('/posts', {
-    authorId: authStore.currentUser?.id,
-    text: newPostText.value,
+  text: newPostText.value,
   })
 
   newPostText.value = ''

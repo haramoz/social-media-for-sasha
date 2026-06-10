@@ -7,6 +7,7 @@ import com.steckenrein.app.entity.Post;
 import com.steckenrein.app.repository.AppUserRepository;
 import com.steckenrein.app.repository.PostRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class PostController {
     }
 
     @PostMapping
-    public PostResponse createPost(@RequestBody CreatePostRequest request) {
+    public PostResponse createPost(
+            @RequestBody CreatePostRequest request,
+            Authentication authentication
+    ) {
+        AppUser currentUser = (AppUser) authentication.getPrincipal();
+
         Post post = new Post();
-        post.setAuthorId(request.authorId());
+        post.setAuthorId(currentUser.getId());
         post.setText(request.text());
 
         return toResponse(postRepository.save(post));

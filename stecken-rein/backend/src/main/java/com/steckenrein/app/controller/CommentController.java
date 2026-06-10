@@ -7,6 +7,7 @@ import com.steckenrein.app.entity.Comment;
 import com.steckenrein.app.repository.AppUserRepository;
 import com.steckenrein.app.repository.CommentRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -33,11 +34,15 @@ public class CommentController {
     @PostMapping
     public CommentResponse createComment(
             @PathVariable Long postId,
-            @RequestBody CreateCommentRequest request
+            @RequestBody CreateCommentRequest request,
+            Authentication authentication
     ) {
         Comment comment = new Comment();
         comment.setPostId(postId);
-        comment.setAuthorId(request.authorId());
+        AppUser currentUser =
+        (AppUser) authentication.getPrincipal();
+
+        comment.setAuthorId(currentUser.getId());
         comment.setText(request.text());
 
         return toResponse(commentRepository.save(comment));
