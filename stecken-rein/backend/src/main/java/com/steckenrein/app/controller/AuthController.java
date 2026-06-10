@@ -6,6 +6,8 @@ import com.steckenrein.app.dto.LoginResponse;
 import com.steckenrein.app.dto.RegisterRequest;
 import com.steckenrein.app.entity.AppUser;
 import com.steckenrein.app.repository.AppUserRepository;
+import com.steckenrein.app.security.JwtService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +17,13 @@ public class AuthController {
 
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthController(AppUserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(AppUserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+
     }
 
     @PostMapping("/register")
@@ -51,13 +56,15 @@ public class AuthController {
             throw new RuntimeException("Your account is waiting for admin approval.");
         }
 
+        String token = jwtService.generateToken(
+        user.getId(),
+        user.getEmail());
+
         return new LoginResponse(
+                token,
                 user.getId(),
                 user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getRole(),
-                user.isApproved()
+                user.getEmail()
         );
     }
 }

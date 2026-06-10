@@ -1,10 +1,8 @@
 package com.steckenrein.app.dto;
 
 public record LoginResponse(
+        String token,
         Long id,
         String firstName,
-        String lastName,
-        String email,
-        String role,
-        boolean approved
+        String email
 ) {}

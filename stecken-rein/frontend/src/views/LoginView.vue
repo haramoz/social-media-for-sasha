@@ -14,8 +14,12 @@ const login = async () => {
   try {
     await authStore.login(email.value, password.value)
     await router.push('/feed')
-  } catch {
-    message.value = 'Login failed or account not approved yet.'
+    } catch (error: any) {
+    console.error(error)
+    message.value =
+      error.response?.data?.message ||
+      error.response?.data ||
+      'Login failed'
   }
 }
 </script>
