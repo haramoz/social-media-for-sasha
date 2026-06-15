@@ -16,6 +16,8 @@ const authStore = useAuthStore()
 
     <router-link v-if="!authStore.isLoggedIn" to="/register">Register</router-link>
 
+    <router-link v-if="authStore.currentUser?.role === 'ADMIN'" to="/admin">Admin</router-link>
+
     <button v-if="authStore.isLoggedIn" @click="authStore.logout()">
       Logout
     </button>
