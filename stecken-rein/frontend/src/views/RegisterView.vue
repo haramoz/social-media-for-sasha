@@ -26,7 +26,7 @@ const register = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="card">
     <h1>Register</h1>
 
     <input v-model="firstName" placeholder="First Name" />
@@ -52,3 +52,37 @@ const register = async () => {
     <p>{{ message }}</p>
   </div>
 </template>
+
+
+
+<style scoped>
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+input,
+button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+</style>

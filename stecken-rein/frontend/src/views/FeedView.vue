@@ -61,7 +61,7 @@ onMounted(loadPosts)
 
     <hr />
 
-    <div v-for="post in posts" :key="post.id">
+    <div v-for="post in posts" :key="post.id" class="feed-card">
       <strong>{{ post.authorName }}</strong>
       <p>{{ post.text }}</p>
       <small>{{ new Date(post.createdAt).toLocaleString() }}</small>
@@ -69,3 +69,38 @@ onMounted(loadPosts)
     </div>
   </div>
 </template>
+
+<style scoped>
+.feed-card {
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.post-meta {
+  font-size: 13px;
+  color: #666;
+}
+</style>
