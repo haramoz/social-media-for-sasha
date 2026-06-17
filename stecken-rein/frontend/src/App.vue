@@ -43,6 +43,10 @@ const logout = async () => {
         Register
       </router-link>
 
+      <router-link v-if="authStore.isLoggedIn" to="/events">
+        Events
+      </router-link>
+
       <button v-if="authStore.isLoggedIn" @click="logout">
         Logout
       </button>

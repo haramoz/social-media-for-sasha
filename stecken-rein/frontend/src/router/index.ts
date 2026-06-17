@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import FeedView from '../views/FeedView.vue'
 import AdminView from '../views/AdminView.vue'
+import EventsView from '../views/EventsView.vue'
 
 import { useAuthStore } from '../stores/auth'
 
@@ -22,6 +23,11 @@ const router = createRouter({
     {
       path: '/admin',
       component: AdminView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/events',
+      component: EventsView,
       meta: { requiresAuth: true },
     }
   ],
