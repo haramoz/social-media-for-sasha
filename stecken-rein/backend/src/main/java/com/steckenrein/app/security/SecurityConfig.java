@@ -26,8 +26,8 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/health", "/api/auth/**").permitAll()
-            .anyRequest().authenticated()
+        .requestMatchers("/api/health", "/api/auth/**", "/uploads/**").permitAll()
+        .anyRequest().authenticated()
         )
         .addFilterBefore(
             jwtAuthenticationFilter,

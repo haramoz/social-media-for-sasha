@@ -8,6 +8,7 @@ type Post = {
   authorId: number
   authorName: string
   text: string
+  imagePath: string | null
   createdAt: string
 }
 
@@ -17,23 +18,41 @@ const posts = ref<Post[]>([])
 const newPostText = ref('')
 const message = ref('')
 
+const selectedImage = ref<File | null>(null)
+
+const onImageSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  selectedImage.value = input.files?.[0] ?? null
+}
+
 const loadPosts = async () => {
   const response = await api.get('/posts')
   posts.value = response.data
 }
 
 const createPost = async () => {
-  if (!newPostText.value.trim()) {
-    message.value = 'Please write something first.'
+  if (!newPostText.value.trim() && !selectedImage.value) {
+    message.value = 'Please write something or choose a photo.'
     return
   }
 
-  await api.post('/posts', {
-  text: newPostText.value,
+  const formData = new FormData()
+  formData.append('text', newPostText.value)
+
+  if (selectedImage.value) {
+    formData.append('image', selectedImage.value)
+  }
+
+  await api.post('/posts/with-image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
 
   newPostText.value = ''
+  selectedImage.value = null
   message.value = ''
+
   await loadPosts()
 }
 
@@ -53,6 +72,8 @@ onMounted(loadPosts)
       style="width: 100%; max-width: 600px"
     />
 
+    <input type="file" accept="image/*" @change="onImageSelected" />
+
     <br /><br />
 
     <button @click="createPost">Post</button>
@@ -63,6 +84,11 @@ onMounted(loadPosts)
 
     <div v-for="post in posts" :key="post.id" class="feed-card">
       <strong>{{ post.authorName }}</strong>
+      <img
+        v-if="post.imagePath"
+        :src="`http://localhost:8090${post.imagePath}`"
+        class="post-image"
+      />
       <p>{{ post.text }}</p>
       <small>{{ new Date(post.createdAt).toLocaleString() }}</small>
       <hr />
@@ -102,5 +128,12 @@ button {
 .post-meta {
   font-size: 13px;
   color: #666;
+}
+
+.post-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 10px;
+  object-fit: cover;
 }
 </style>

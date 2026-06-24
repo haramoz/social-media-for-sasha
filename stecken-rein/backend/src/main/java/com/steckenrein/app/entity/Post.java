@@ -27,4 +27,9 @@ public class Post {
     public void setText(String text) { this.text = text; }
 
     public Instant getCreatedAt() { return createdAt; }
+
+    private String imagePath;
+
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

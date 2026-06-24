@@ -7,5 +7,6 @@ public record PostResponse(
         Long authorId,
         String authorName,
         String text,
+        String imagePath,
         Instant createdAt
 ) {}
