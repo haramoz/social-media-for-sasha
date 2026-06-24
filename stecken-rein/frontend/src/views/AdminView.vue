@@ -25,6 +25,16 @@ const approveUser = async (id: number) => {
   await loadPendingUsers()
 }
 
+const rejectUser = async (id: number) => {
+
+    if (!confirm("Reject this registration request?"))
+        return
+
+    await api.delete(`/admin/users/${id}`)
+
+    await loadPendingUsers()
+}
+
 onMounted(loadPendingUsers)
 </script>
 
@@ -42,11 +52,65 @@ onMounted(loadPendingUsers)
       <strong>{{ user.firstName }} {{ user.lastName }}</strong>
       <p>{{ user.email }}</p>
 
-      <button @click="approveUser(user.id)">
-        Approve
-      </button>
+      <div class="actions">
+
+        <button
+            class="approve-button"
+            @click="approveUser(user.id)"
+        >
+            ✓ Approve
+        </button>
+
+        <button
+            class="reject-button"
+            @click="rejectUser(user.id)"
+        >
+            ✕ Reject
+        </button>
+
+      </div>
 
       <hr />
     </div>
   </div>
 </template>
+
+<style scoped>
+  .actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .approve-button,
+  .reject-button {
+      width: auto;
+      min-width: 110px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+  }
+
+  .approve-button {
+      background: #22c55e;
+      color: white;
+  }
+
+  .approve-button:hover {
+      background: #16a34a;
+  }
+
+  .reject-button {
+      background: #ef4444;
+      color: white;
+  }
+
+  .reject-button:hover {
+      background: #dc2626;
+  }
+
+</style>

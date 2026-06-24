@@ -56,6 +56,16 @@ const createPost = async () => {
   await loadPosts()
 }
 
+const deletePost = async (id: number) => {
+
+  if (!confirm("Delete this post?"))
+    return
+
+  await api.delete(`/posts/${id}`)
+
+  await loadPosts()
+}
+
 onMounted(loadPosts)
 </script>
 
@@ -84,14 +94,24 @@ onMounted(loadPosts)
 
     <div v-for="post in posts" :key="post.id" class="feed-card">
       <strong>{{ post.authorName }}</strong>
-      <img
-        v-if="post.imagePath"
-        :src="`http://localhost:8090${post.imagePath}`"
-        class="post-image"
-      />
+      <div v-if="post.imagePath" class="post-image-wrapper">
+        <img
+          :src="`http://localhost:8090${post.imagePath}`"
+          class="post-image"
+        />
+      </div>
       <p>{{ post.text }}</p>
       <small>{{ new Date(post.createdAt).toLocaleString() }}</small>
-      <hr />
+
+      <div class="post-actions">
+        <button
+          v-if="post.authorId === authStore.currentUser?.id"
+          class="delete-button"
+          @click="deletePost(post.id)"
+        >
+          🗑 Delete
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -130,10 +150,37 @@ button {
   color: #666;
 }
 
+.post-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f3f4f6;
+  margin-top: 12px;
+}
+
 .post-image {
   width: 100%;
-  border-radius: 12px;
-  margin-top: 10px;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.post-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:12px;
+}
+
+.delete-button{
+
+    background:#dc2626;
+    color:white;
+
+    width:auto;
+
+    padding:8px 18px;
+
+    border-radius:10px;
 }
 </style>

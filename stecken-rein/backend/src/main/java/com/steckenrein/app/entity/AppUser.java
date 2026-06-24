@@ -38,6 +38,10 @@ public class AppUser {
     public Instant getCreatedAt() { return createdAt; }
 
     public void setApproved(boolean approved) {
-    this.approved = approved;
-}
+        this.approved = approved;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

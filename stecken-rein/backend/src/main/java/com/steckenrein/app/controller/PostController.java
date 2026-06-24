@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.io.IOException;
 
 import java.util.List;
 
@@ -85,6 +86,33 @@ public class PostController {
         }
 
         return toResponse(postRepository.save(post));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(
+            @PathVariable Long id,
+            Authentication authentication
+    ) throws IOException {
+
+        AppUser currentUser = (AppUser) authentication.getPrincipal();
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (!post.getAuthorId().equals(currentUser.getId())) {
+            throw new RuntimeException("You can only delete your own posts.");
+        }
+
+        if (post.getImagePath() != null) {
+
+            String filename = post.getImagePath().replace("/uploads/", "");
+
+            Files.deleteIfExists(
+                    Path.of("uploads").resolve(filename)
+            );
+        }
+
+        postRepository.delete(post);
     }
 
     private PostResponse toResponse(Post post) {

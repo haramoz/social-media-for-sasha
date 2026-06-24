@@ -20,20 +20,27 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    async login(email: string, password: string) {
-    const response = await api.post('/auth/login', {
-      email,
-      password,
-    })
+      async login(email: string, password: string) {
+      const response = await api.post('/auth/login', {
+        email,
+        password,
+      })
 
-    localStorage.setItem('token', response.data.token)
+      localStorage.setItem('token', response.data.token)
 
-    localStorage.setItem(
-      'currentUser',
-      JSON.stringify(response.data)
-    )
+      localStorage.setItem(
+        'currentUser',
+        JSON.stringify(response.data)
+      )
 
-    this.currentUser = response.data
-  }
+      this.currentUser = response.data
+    },
+
+    logout() {
+        localStorage.removeItem('token')
+        localStorage.removeItem('currentUser')
+
+        this.currentUser = null
+    }
   },
 })

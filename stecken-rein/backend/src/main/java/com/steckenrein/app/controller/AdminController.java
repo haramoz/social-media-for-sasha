@@ -44,6 +44,19 @@ public class AdminController {
         return toResponse(userRepository.save(user));
     }
 
+    @DeleteMapping("/users/{id}")
+    public void rejectUser(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        requireAdmin(authentication);
+
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        userRepository.delete(user);
+    }
+
     private void requireAdmin(Authentication authentication) {
         AppUser currentUser = (AppUser) authentication.getPrincipal();
 
