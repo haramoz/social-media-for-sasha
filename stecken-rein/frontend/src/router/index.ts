@@ -6,6 +6,8 @@ import RegisterView from '../views/RegisterView.vue'
 import FeedView from '../views/FeedView.vue'
 import AdminView from '../views/AdminView.vue'
 import EventsView from '../views/EventsView.vue'
+import ChatListView from '../views/ChatListView.vue'
+import ChatView from '../views/ChatView.vue'
 
 import { useAuthStore } from '../stores/auth'
 
@@ -28,6 +30,16 @@ const router = createRouter({
     {
       path: '/events',
       component: EventsView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/chat',
+      component: ChatListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/chat/:neighborId',
+      component: ChatView,
       meta: { requiresAuth: true },
     }
   ],

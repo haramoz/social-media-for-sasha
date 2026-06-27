@@ -47,6 +47,10 @@ const logout = async () => {
         Events
       </router-link>
 
+      <router-link v-if="authStore.isLoggedIn" to="/chat">
+        Chat
+      </router-link>
+
       <button v-if="authStore.isLoggedIn" @click="logout">
         Logout
       </button>
